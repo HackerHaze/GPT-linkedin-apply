@@ -32,6 +32,7 @@ At this point, you should switch back to your master branch and make sure it's u
 git checkout 325-add-japanese-localisation
 git pull --rebase upstream master
 git push --force-with-lease 325-add-japanese-localisation
+
 ```
 
 

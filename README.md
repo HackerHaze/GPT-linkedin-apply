@@ -58,6 +58,7 @@ We welcome contributions from everyone. If you'd like to contribute, please see 
 If we got you a job or you want to show some appreciation, consider buying us a pizza! You can do so at the following link: [Buy Us a Pizza](https://www.buymeacoffee.com/matt93)
 ## 📃 License 📃
 
+
 This project is licensed under the MIT License.
 
 Happy job hunting and good luck with your applications! 🎉

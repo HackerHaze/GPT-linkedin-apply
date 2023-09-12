@@ -20,5 +20,6 @@
         "declaration": false,
         "noEmit": false,
         "outDir": "./.ts-node"
+        
     }
 }

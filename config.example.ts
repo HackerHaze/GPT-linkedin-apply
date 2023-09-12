@@ -11,6 +11,7 @@ const config: Config = {
     REMOTE: true,
     ON_SITE: false,
     HYBRID: false,
+    
   },
   DATE_POSTED: "Past 24 hours", // Past 24 hours | Past week | Past month | Any time
   EASY_APPLY: true,
