@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test Page</title>
+    <style>
+      body {
+        background-color: lightblue;
+      }
+    </style>
+    <script>
+      function greet() {
+        alert("Hello, Fellas");
+      }
+    </script>
+  </head>
+  <body>
+    <main role="main">
+      <h1>Welcome to the Job Application</h1>
+      <div id="bodyContent">
+        <h2>Section 1</h2>
+        <p>This is a paragraph in section 1.</p>
+        <form id="jobApplicationForm">
+          <div>
+            <label for="experience-years">How many years of experience do you have?</label>
+            <input id="experience-years" type="text" placeholder="Answer here..." />
+          </div>
+          <div>
+            <label for="experience-react">Please reply "yes" if you would like to apply for this position</label>
+            <input id="experience-react" type="text" placeholder="Answer here..." />
+          </div>
+          <!-- <div>
+            <label for="experience-lp">Tell me about your last project?</label>
+            <input id="experience-lp" type="text" placeholder="Answer here..." />
+          </div>
+          <div>
+            <label>What is your preferred programming language and why?</label>
+            <input type="text" placeholder="Answer here..." />
+          </div> -->
+          <!-- <div>
+            <label
+              >Describe a challenging problem you faced and how you solved
+              it?</label
+            >
+            <input type="text" placeholder="Answer here..." />
+          </div> -->
+          <!-- <div>
+            <label>Are you comfortable working with TypeScript?</label>
+            <input type="radio" id="yes" name="typescript" value="yes" />
+            <label for="yes">Yes</label>
+            <input type="radio" id="no" name="typescript" value="no" />
+            <label for="no">No</label>
+          </div> -->
+          <div>
+            <label>Select the frameworks you have experience with:</label>
+            <input type="checkbox" id="react" name="framework" value="React" />
+            <label for="react">React</label>
+            <input
+              type="checkbox"
+              id="angular"
+              name="framework"
+              value="Angular"
+            />
+            <label for="angular">Angular</label>
+            <input type="checkbox" id="vue" name="framework" value="Vue" />
+            <label for="vue">Vue</label>
+            <label>Select what is your level of English:</label>
+            <select name="options">
+              <option value="option1">None</option>
+              <option value="option2">Conversational</option>
+              <option value="option2">Professional</option>
+              <option value="option2">Native</option>
+            </select>
+          </div>
+          <button type="submit">Apply</button>
+        </form>
+        <div id="extraContent">
+          <h3>Subsection 1.1</h3>
+          <p>This is a paragraph in subsection 1.1.</p>
+        </div>
+      </div>
+      <section>
+        <h2>Section 2</h2>
+        <p>This is a paragraph in section 2.</p>
+        <a href="https://example.com">Visit Example.com</a>
+        <div id="extraSection">
+          <h3>Subsection 2.1</h3>
+          <p>This is a paragraph in subsection 2.1.</p>
+          <a href="https://example2.com">Visit Example2.com</a>
+          <div id="extraSection">
+            <h3>Subsection 2.1.1</h3>
+            <p>This is a paragraph in subsection 2.1.1</p>
+            <a href="https://example2.com">Visit Example2.com</a>
+          </div>
+          <div id="extraSection">
+            <h3>Subsection 2.1.2</h3>
+            <p>This is a paragraph in subsection 2.1.2</p>
+            <a href="https://example2.com">Visit Example2.com</a>
+            <div id="extraSection">
+              <h3>Subsection 2.1.2.1</h3>
+              <p>This is a paragraph in subsection 2.1.2.1</p>
+              <a href="https://example2.com">Visit Example2.com</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script>
+      console.log("This is a script tag at the end of the body.");
+    </script>
+  </body>
+</html>
