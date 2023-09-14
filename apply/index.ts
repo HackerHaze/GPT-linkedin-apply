@@ -18,7 +18,6 @@ async function clickApplyButton(page: Page): Promise<void> {
       });
       await page.click(selectors.easyApplyButtonEnabled);
     } else {
-      console.log("clicking apply button");
       const buttonText = await page.evaluate(() => {
         const button = document.querySelector(selectors.applyButton);
         return button ? button.textContent?.trim() : null;
@@ -76,10 +75,11 @@ async function apply({
       while (maxPages--) {
         await fillFields(page, formData).catch(noop);
 
+        
         await clickNextButton(page).catch(noop);
 
         const isError = await waitForNoError(page).catch(noop);
-        if (isError) {
+        if (isError && config.GPT_ENABLED) {
           console.log("Error applying at:", companyName);
           while (maxTries--) {
             await startAct(page);

@@ -6,7 +6,7 @@ const config: Config = {
   KEYWORDS: `typescript"`,
   LOCATION: "United States",
   APPLIES_AMOUNT: 2000,
-  HEADLESS: false, // Wether chrome will not show up
+  HEADLESS: true, // Wether chrome will not show up
   WORKPLACE: {
     REMOTE: true,
     ON_SITE: false,
@@ -23,6 +23,7 @@ const config: Config = {
     blacklist: [
       "recruiting",
       "Jobot",
+      "Junior",
       "CyberCoders",
       "recruitment",
       "IT Consulting",

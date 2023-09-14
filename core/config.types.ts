@@ -37,6 +37,7 @@ export interface Config {
   LOCATION: string;
   OPEN_AI_KEY: string;
   EASY_APPLY: boolean;
+  GPT_ENABLED: boolean;
   APPLIES_AMOUNT: number;
   HEADLESS: boolean; // Wether chrome will show up or not.
   WORKPLACE: Workplace;
