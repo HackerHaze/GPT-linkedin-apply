@@ -4,6 +4,39 @@ Welcome to the Ultimate Job Application Assistant! This repository is aimed at a
 
 The repo is focused on TypeScript, and uses Puppeteer for web page interaction and OpenAI API for form filling instructions.
 
+
+## 🌟 Getting Started 🌟
+
+To get started with the Ultimate Job Application Assistant, follow these steps:
+
+### Prerequisites
+
+- Node.js installed on your machine
+- A package manager like npm or Yarn
+- TypeScript installed globally (`npm install -g typescript`)
+- A LinkedIn account for job applications
+
+### Installation
+
+1. Clone the repository to your local machine
+2. Navigate to the cloned directory
+3. Install the dependencies
+```bash
+npm install
+```
+4. Start application
+```bash
+npm start
+```
+### Configuration
+
+1. Rename the `example.config.json` to `config.json`.
+2. Fill in your LinkedIn credentials and other necessary parameters in `config.json`.
+
+### Running the Application
+
+1. Compile the TypeScript files to JavaScript:
+
 ## 🎯 Goals of this Repository 🎯
 
 1. **Automate Job Application**: Automate the process of applying for jobs on platforms like LinkedIn and, in the future, any application forms.
