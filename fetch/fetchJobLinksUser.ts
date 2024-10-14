@@ -1,4 +1,4 @@
-import { ElementHandle, Page } from "puppeteer";
+import { ElementHandle, Page, TimeoutError } from "puppeteer";
 import LanguageDetect from "languagedetect";
 
 import buildUrl from "../utils/buildUrl";
@@ -6,10 +6,12 @@ import wait from "../utils/wait";
 import selectors from "../selectors";
 import config from "../config";
 import { checkJobDescription } from "./checkJobDescription";
+import { LogLevel } from "../constants/logger-constants";
+import { getLogger } from "../utils/logger";
 
 const MAX_PAGE_SIZE = 7;
 const languageDetector = new LanguageDetect();
-
+const logger = getLogger();
 async function getJobSearchMetadata({
   page,
   location,
@@ -99,6 +101,7 @@ async function* fetchJobLinksUser({
   jobDescription,
   jobDescriptionLanguages,
 }: FetchJobLinksUserParams): AsyncGenerator<[string, string, string, string]> {
+  // const logger = getLogger();
   let numSeenJobs = 0;
   let numMatchingJobs = 0;
   const fWt = [onSite, remote, hybrid]
@@ -140,11 +143,17 @@ async function* fetchJobLinksUser({
   const url = buildUrl("https://www.linkedin.com/jobs/search", searchParams);
 
   while (numSeenJobs < config.APPLIES_AMOUNT) {
+    logger.info("Fetching job links", { url: url.toString() });
     url.searchParams.set("start", numSeenJobs.toString());
     await wait(2000);
 
-    await page.goto(url.toString(), { waitUntil: "load" });
+    await page.goto(url.toString(), { waitUntil: "domcontentloaded" });
     try {
+      logger.info("Waiting for job listings", {
+        numAvailableJobs,
+        numSeenJobs,
+        MAX_PAGE_SIZE,
+      });
       await page.waitForSelector(
         `${selectors.searchResultListItem}:nth-child(${Math.min(
           MAX_PAGE_SIZE,
@@ -153,7 +162,7 @@ async function* fetchJobLinksUser({
         { timeout: 6000 }
       );
     } catch (error) {
-      console.error(`Error waiting for selector: ${error}`);
+      logger.warn(`Error waiting for selector: ${error}`);
     }
 
     const jobListings = await page.$$(selectors.searchResultListItem);
@@ -162,52 +171,41 @@ async function* fetchJobLinksUser({
       try {
         await wait(1000);
 
-        const [link, title] = await page.$eval(
-          `${selectors.searchResultListItem}:nth-child(${i + 1}) ${
-            selectors.searchResultListItemLink
-          }`,
-          (el) => {
-            const linkEl = el as HTMLLinkElement;
+        const [link, title] = await page.evaluate((selector) => {
+          const linkEl = document.querySelector(selector) as HTMLLinkElement;
+          linkEl.click();
+          return [linkEl.href.trim(), linkEl.innerText.trim()];
+        }, `${selectors.searchResultListItem}:nth-child(${i + 1}) ${selectors.searchResultListItemLink}`);
 
-            linkEl.click();
+        logger.info("Clicking job link", { link });
 
-            return [linkEl.href.trim(), linkEl.innerText.trim()];
-          }
-        );
+        // Wait for the job description to be visible instead of waiting for navigation
+        try {
+          await page.waitForSelector(selectors.jobDescription, {
+            visible: true,
+            timeout: 60000,
+          });
+        } catch (error) {
+          logger.error("Timeout waiting for job description", { error, link });
+          continue; // Skip to the next job listing if this one times out
+        }
+
         const companyName = await page.$eval(
-          `${selectors.searchResultListItem}:nth-child(${
-            i + 1
-          }) .job-card-container__primary-description`,
+          selectors.searchResultListItemCompanyName,
           (el) => (el as HTMLElement).innerText.trim()
         );
-        try {
-          await page.waitForFunction(
-            async (selectors) => {
-              const hasLoadedDescription = !!document
-                .querySelector<HTMLElement>(selectors.jobDescription)
-                ?.innerText.trim();
-              const hasLoadedStatus = !!(
-                document.querySelector(selectors.easyApplyButtonEnabled) ||
-                document.querySelector(selectors.appliedToJobFeedback)
-              );
-
-              return hasLoadedStatus && hasLoadedDescription;
-            },
-            { timeout: 3000 },
-            selectors
-          );
-        } catch (error) {
-          console.log(
-            "🚀 ~ ERROING OUT AT: file: fetchJobLinksUser.ts:183 ~ error:",
-            error
-          );
-        }
+        logger.info("Company name:", { companyName });
 
         const incomingJobDescription = await page.$eval(
           selectors.jobDescription,
           (el) => (el as HTMLElement).innerText
         );
-        const canApply = !!(await page.$(selectors.easyApplyButtonEnabled));
+        logger.info("Job description:", { incomingJobDescription });
+        const canApply =
+          !!(await page.$(selectors.easyApplyButtonEnabled)) ||
+          !!(await page.$(selectors.applyButton));
+        logger.info("Can apply:", { canApply });
+
         const jobDescriptionLanguage = languageDetector.detect(
           incomingJobDescription,
           1
@@ -220,16 +218,17 @@ async function* fetchJobLinksUser({
           checkJobDescription(incomingJobDescription, jobDescription);
 
         if (
-          canApply &&
-          (includesWhitelisted && !includesBlacklisted) &&
-          matchesLanguage
+          canApply
+          // &&
+          // includesWhitelisted &&
+          // !includesBlacklisted &&
+          // matchesLanguage
         ) {
           numMatchingJobs++;
-
           yield [link, title, companyName, incomingJobDescription];
         }
       } catch (e) {
-        console.log(e);
+        logger.error("Error processing job listing:", { error: e });
       }
     }
 

@@ -1,5 +1,6 @@
 export default {
   easyApplyButtonEnabled: "button.jobs-apply-button:enabled",
+  easyApplyButton: 'button.jobs-apply-button[aria-label^="Easy Apply"]',
   applyButton: "button.jobs-apply-button",
 
   // Job search form
@@ -41,13 +42,11 @@ export default {
   // fetch user
   searchResultList: ".jobs-search-results-list",
   searchResultListText: "small.jobs-search-results-list__text",
-  searchResultListItem:
-    ".jobs-search-results-list li.jobs-search-results__list-item",
-  searchResultListItemLink: "a.job-card-list__title",
+  searchResultListItem: ".jobs-search-results__list-item",
+  searchResultListItemLink: ".job-card-container__link",
   searchResultListItemCompanyName:
-    "span.job-card-container__primary_description",
-  jobDescription:
-    "div.jobs-description-content > div.jobs-description-content__text > span",
+    ".job-details-jobs-unified-top-card__primary-description-container",
+  jobDescription: ".jobs-box__html-content.jobs-description-content__text",
   appliedToJobFeedback: ".artdeco-inline-feedback",
 
   // fetch guest
